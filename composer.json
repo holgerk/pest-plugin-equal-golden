@@ -14,7 +14,7 @@
     "require": {
         "php": "^8.2",
         "nikic/php-parser": "^5.0",
-        "pestphp/pest": "^2.5",
+        "pestphp/pest": "^2.33",
         "pestphp/pest-plugin": "^2.0.1",
         "symfony/var-exporter": "^7.0"
     },
