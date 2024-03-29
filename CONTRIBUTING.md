@@ -36,11 +36,6 @@ Run all tests:
 composer test
 ```
 
-Check types:
-```bash
-composer test:types
-```
-
 Unit tests:
 ```bash
 composer test:unit

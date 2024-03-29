@@ -52,28 +52,57 @@ final class Plugin implements Terminable, HandlesArguments
 
             return $b->startPos <=> $a->startPos;
         });
+
         foreach ($insertions as $insertion) {
             $content = file_get_contents($insertion->file);
-
-            // detect indention
-            $indent = '';
-            while (true) {
-                $char = $content[$insertion->startPos - strlen($indent) - 1];
-                if ($char === ' ' || $char === "\t") {
-                    $indent = $char . $indent;
-                } else {
-                    break;
-                }
-            }
+            $indent = $this->getIndent($insertion->startPos, $content);
 
             // add indention
             $replacement = $insertion->replacement;
             $replacementLines = explode("\n", $replacement);
             $replacement = implode("\n$indent", $replacementLines);
 
-            $content = substr_replace($content, $replacement, $insertion->startPos,
-                $insertion->endPos - $insertion->startPos + 1);
+            // insert expectation
+            $content = substr_replace(
+                $content,
+                $replacement,
+                $insertion->startPos,
+                $insertion->endPos - $insertion->startPos + 1
+            );
             file_put_contents($insertion->file, $content);
         }
+    }
+
+    private function getIndent(int $startPos, string $content): string
+    {
+        // detect start of line position
+        $offset = 0;
+        $startOfLine = 0;
+        while (true) {
+            $offset -= 1;
+            $charPos = $startPos + $offset;
+            if ($charPos < 0) {
+                break;
+            }
+            $char = $content[$charPos];
+            if ($char === "\n" || $char === "\r") {
+                $startOfLine = $startPos + $offset + 1;
+                break;
+            }
+        }
+        // detect indention
+        $indent = '';
+        $offset = 0;
+        while (true) {
+            $charPos = $startOfLine + $offset;
+            $char = $content[$charPos];
+            if ($char === ' ' || $char === "\t") {
+                $indent .= $char;
+            } else {
+                break;
+            }
+            $offset += 1;
+        }
+        return $indent;
     }
 }

@@ -14,20 +14,25 @@ test('pass', function () {
     ]);
 });
 
-test('generate golden', function (string $caseDirectory) {
-    // GIVEN
-    $inputFile = $caseDirectory.'/input.php';
-    $testFile = $caseDirectory.'/test.php';
-    $expectedFile = $caseDirectory.'/expected.php';
-    copy($inputFile, $testFile);
+foreach (array_map('basename', glob(__DIR__.'/cases/*')) as $case) {
 
-    // WHEN
-    include $testFile;
-    (new Plugin())->terminate(); // <- forces write
+    test('generate golden - ' . $case, function () use($case) {
+        // GIVEN
+        $caseDirectory = __DIR__.'/cases/'.$case;
+        $inputFile = $caseDirectory.'/input.php';
+        $testFile = $caseDirectory.'/test.php';
+        $expectedFile = $caseDirectory.'/expected.php';
+        copy($inputFile, $testFile);
 
-    // THEN
-    Assert::assertFileEquals($expectedFile, $testFile);
-})->with(/* [__DIR__ . '/cases/chain'] */ glob(__DIR__.'/cases/*'));
+        // WHEN
+        include $testFile;
+        (new Plugin())->terminate(); // <- forces write
+
+        // THEN
+        Assert::assertFileEquals($expectedFile, $testFile);
+    });
+
+}
 
 test('failures', function () {
     expect([1, 2, 3])->toEqualGolden([4]);
