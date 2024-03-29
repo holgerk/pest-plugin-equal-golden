@@ -6,13 +6,28 @@ namespace Holgerk\EqualGolden;
 
 // use Pest\Contracts\Plugins\AddsOutput;
 use Pest\Contracts\Plugins\Terminable;
-// use Pest\Contracts\Plugins\HandlesArguments;
+use Pest\Contracts\Plugins\HandlesArguments;
+use Pest\Plugins\Concerns\HandleArguments;
+use Pest\TestSuite;
 
 /** @internal */
-final class Plugin implements Terminable
+final class Plugin implements Terminable, HandlesArguments
 {
+    use HandleArguments;
+
     /** @var Insertion[] */
     private static array $insertions = [];
+    public static bool $updateGolden = false;
+
+    public function handleArguments(array $arguments): array
+    {
+        if ($this->hasArgument('--update-golden', $arguments)) {
+            $arguments = $this->popArgument('--update-golden', $arguments);
+            self::$updateGolden = true;
+        }
+
+        return $arguments;
+    }
 
     public static function registerInsertion(Insertion $insertion): void
     {

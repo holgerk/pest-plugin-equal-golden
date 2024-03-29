@@ -8,7 +8,7 @@ use Pest\Expectation;
 use Symfony\Component\VarExporter\VarExporter;
 
 expect()->extend('toEqualGolden', function (mixed $golden): Expectation {
-    if ($golden === null) {
+    if ($golden === null || Plugin::$updateGolden) {
         $golden = $this->value;
 
         $file = null;
@@ -22,7 +22,7 @@ expect()->extend('toEqualGolden', function (mixed $golden): Expectation {
         }
 
         if ($file) {
-            $replacement = VarExporter::export($this->value);
+            $replacement = VarExporter::export($golden);
             Plugin::registerInsertion(Insertion::make($file, $line, $replacement));
         } else {
             // TODO report error

@@ -4,8 +4,14 @@ use Holgerk\EqualGolden\Plugin;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 
+beforeEach(fn() => Plugin::$updateGolden = false);
+
 test('pass', function () {
-    expect([1, 2, 3])->toEqualGolden([1, 2, 3]);
+    expect([1, 2, 3])->toEqualGolden([
+        1,
+        2,
+        3,
+    ]);
 });
 
 test('generate golden', function (string $caseDirectory) {
@@ -24,5 +30,5 @@ test('generate golden', function (string $caseDirectory) {
 })->with(/* [__DIR__ . '/cases/chain'] */ glob(__DIR__.'/cases/*'));
 
 test('failures', function () {
-    expect([1, 2, 3])->toEqualGolden([4, 5, 6]);
+    expect([1, 2, 3])->toEqualGolden([4]);
 })->throws(ExpectationFailedException::class);
