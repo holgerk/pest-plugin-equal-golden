@@ -4,7 +4,7 @@ use Holgerk\EqualGolden\Plugin;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 
-beforeEach(fn() => Plugin::$updateGolden = false);
+beforeEach(fn () => Plugin::$updateGolden = false);
 
 test('pass', function () {
     expect([1, 2, 3])->toEqualGolden([
@@ -16,7 +16,7 @@ test('pass', function () {
 
 foreach (array_map('basename', glob(__DIR__.'/cases/*')) as $case) {
 
-    test('generate golden - ' . $case, function () use($case) {
+    test('generate golden - '.$case, function () use ($case) {
         // GIVEN
         $caseDirectory = __DIR__.'/cases/'.$case;
         $inputFile = $caseDirectory.'/input.php';

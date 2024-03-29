@@ -6,8 +6,8 @@ namespace Holgerk\EqualGolden;
 
 // use Pest\Contracts\Plugins\AddsOutput;
 use Pest\Contracts\Plugins\HandlesArguments;
-use Pest\Plugins\Concerns\HandleArguments;
 use Pest\Contracts\Plugins\Terminable;
+use Pest\Plugins\Concerns\HandleArguments;
 
 /** @internal */
 final class Plugin implements Terminable, HandlesArguments
@@ -16,6 +16,7 @@ final class Plugin implements Terminable, HandlesArguments
 
     /** @var Insertion[] */
     private static array $insertions = [];
+
     public static bool $updateGolden = false;
 
     public function handleArguments(array $arguments): array
@@ -103,6 +104,7 @@ final class Plugin implements Terminable, HandlesArguments
             }
             $offset += 1;
         }
+
         return $indent;
     }
 }

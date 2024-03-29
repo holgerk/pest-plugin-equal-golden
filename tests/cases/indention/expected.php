@@ -1,6 +1,6 @@
 <?php
 
-{
+if (true) {
     expect([1, 2, 3])->toEqualGolden([
         1,
         2,
