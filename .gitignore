@@ -9,3 +9,5 @@ coverage.xml
 .temp/coverage.php
 *.swp
 *.swo
+.phpunit.cache
+/tests/cases/*/test.php
