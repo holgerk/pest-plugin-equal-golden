@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Holgerk\EqualGolden;
 
 // use Pest\Contracts\Plugins\AddsOutput;
-use Pest\Contracts\Plugins\Terminable;
 use Pest\Contracts\Plugins\HandlesArguments;
 use Pest\Plugins\Concerns\HandleArguments;
-use Pest\TestSuite;
+use Pest\Contracts\Plugins\Terminable;
 
 /** @internal */
 final class Plugin implements Terminable, HandlesArguments
