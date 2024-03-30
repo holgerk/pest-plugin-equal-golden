@@ -11,7 +11,7 @@ use Pest\Plugins\Concerns\HandleArguments;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /** @internal */
-final class Plugin implements HandlesArguments, Terminable, AddsOutput
+final class Plugin implements AddsOutput, HandlesArguments, Terminable
 {
     use HandleArguments;
 
