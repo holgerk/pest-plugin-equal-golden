@@ -12,8 +12,19 @@ use PhpParser\ParserFactory;
 /** @internal */
 final class Insertion
 {
-    public static function make(string $filePath, int $lineToFind, string $replacement): self
+    public static function make(string $replacement): self
     {
+        $filePath = null;
+        $lineToFind = null;
+        foreach (debug_backtrace() as $stackItem) {
+            if (($stackItem['type'] ?? '') === '->' && ($stackItem['args'][0] ?? '') === 'toEqualGolden') {
+                $filePath = $stackItem['file'];
+                $lineToFind = $stackItem['line'];
+                break;
+            }
+        }
+        assert((bool) $filePath);
+
         $parser = (new ParserFactory())->createForHostVersion();
         $fileContent = file_get_contents($filePath);
         $ast = $parser->parse($fileContent);

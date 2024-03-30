@@ -2,4 +2,17 @@
 
 declare(strict_types=1);
 
-require_once __DIR__.'/Expectations.php';
+use Holgerk\EqualGolden\Insertion;
+use Holgerk\EqualGolden\Plugin;
+use Pest\Expectation;
+use Symfony\Component\VarExporter\VarExporter;
+
+expect()->extend('toEqualGolden', function (mixed $golden): Expectation {
+    if ($golden === null || Plugin::$updateGolden) {
+        $golden = $this->value;
+        $replacement = VarExporter::export($golden);
+        Plugin::registerInsertion(Insertion::make($replacement));
+    }
+
+    return $this->toEqual($golden);
+});

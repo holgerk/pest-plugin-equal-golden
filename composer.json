@@ -1,6 +1,6 @@
 {
-    "name": "holgerk/pest-plugin-assert-golden",
-    "description": "My awesome plugin",
+    "name": "holgerk/pest-plugin-equal-golden",
+    "description": "Similar to the `toEqual` assertion, but with automatic expectation generation.",
     "keywords": [
         "php",
         "framework",

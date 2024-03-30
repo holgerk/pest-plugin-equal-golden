@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Holgerk\EqualGolden;
 
-// use Pest\Contracts\Plugins\AddsOutput;
+use Pest\Contracts\Plugins\AddsOutput;
 use Pest\Contracts\Plugins\HandlesArguments;
 use Pest\Contracts\Plugins\Terminable;
 use Pest\Plugins\Concerns\HandleArguments;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /** @internal */
-final class Plugin implements Terminable, HandlesArguments
+final class Plugin implements HandlesArguments, Terminable, AddsOutput
 {
     use HandleArguments;
 
@@ -18,6 +19,18 @@ final class Plugin implements Terminable, HandlesArguments
     private static array $insertions = [];
 
     public static bool $updateGolden = false;
+
+    private OutputInterface $output;
+
+    public function __construct(OutputInterface $output)
+    {
+        $this->output = $output;
+    }
+
+    public static function registerInsertion(Insertion $insertion): void
+    {
+        self::$insertions[] = $insertion;
+    }
 
     public function handleArguments(array $arguments): array
     {
@@ -29,14 +42,23 @@ final class Plugin implements Terminable, HandlesArguments
         return $arguments;
     }
 
-    public static function registerInsertion(Insertion $insertion): void
-    {
-        self::$insertions[] = $insertion;
-    }
-
     public function terminate(): void
     {
         $this->writeAndResetInsertions();
+    }
+
+    public function addOutput(int $exitCode): int
+    {
+        foreach (self::$insertions as $insertion) {
+            $this->output->writeln([
+                sprintf(
+                    '  <fg=white;options=bold;bg=blue> INFO </> Writing expectations to: %s.',
+                    $insertion->file
+                ),
+            ]);
+        }
+
+        return $exitCode;
     }
 
     private function writeAndResetInsertions(): void
@@ -44,8 +66,7 @@ final class Plugin implements Terminable, HandlesArguments
         $insertions = self::$insertions;
         self::$insertions = [];
 
-        // sort insertions from end of file to the beginning, so we do net mess up the positions
-        // through the replacements
+        // arrange insertions starting from the end of the file to prevent disrupting the positions during replacements
         usort($insertions, function (Insertion $a, Insertion $b): int {
             if ($a->file !== $b->file) {
                 return $a->file <=> $b->file;
