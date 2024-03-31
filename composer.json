@@ -1,6 +1,6 @@
 {
     "name": "holgerk/pest-plugin-equal-golden",
-    "description": "Similar to the `toEqual` assertion, but with automatic expectation generation.",
+    "description": "Provides a `toEqualGolden` expectation, which behaves identically to the `toEqual` expectation, with the only difference being that if `null` is passed as the expectation, the expectation is automatically created from the current value.",
     "keywords": [
         "php",
         "framework",
