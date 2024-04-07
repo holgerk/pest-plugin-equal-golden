@@ -2,13 +2,12 @@
 
 [![run-tests](https://github.com/holgerk/pest-plugin-equal-golden/actions/workflows/tests.yml/badge.svg)](https://github.com/holgerk/pest-plugin-equal-golden/actions/workflows/tests.yml)
 
-Provides a `toEqualGolden` expectation, which behaves identically to the `toEqual` expectation, 
-with the only difference being that if `null` is passed as the expectation, the expectation is 
-automatically created from the current value.
+Provides a `toEqualGolden` assertion, same as `toEqual`, but when `null` is given as argument, the test file is 
+automatically edited and `null` is substituted with the actual value.
 
 So, if you add:
 
-```php 
+```php
 expect(['color' => 'golden'])
     ->toEqualGolden(null);
 ```
