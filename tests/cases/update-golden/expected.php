@@ -2,5 +2,5 @@
 
 use Holgerk\EqualGolden\Plugin;
 
-Plugin::$updateGolden = true;
+Plugin::$forceUpdateGolden = true;
 expect('hello')->toEqualGolden('hello');

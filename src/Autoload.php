@@ -8,10 +8,10 @@ use Pest\Expectation;
 use Symfony\Component\VarExporter\VarExporter;
 
 expect()->extend('toEqualGolden', function (mixed $golden): Expectation {
-    if ($golden === null || Plugin::$updateGolden) {
+    if ($golden === null || Plugin::$forceUpdateGolden) {
         $golden = $this->value;
         $replacement = VarExporter::export($golden);
-        Plugin::registerInsertion(Insertion::make($replacement));
+        Insertion::register($replacement);
     }
 
     return $this->toEqual($golden);

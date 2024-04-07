@@ -5,7 +5,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\Console\Output\NullOutput;
 
-beforeEach(fn () => Plugin::$updateGolden = false);
+beforeEach(fn () => Plugin::$forceUpdateGolden = false);
 
 test('generate expectation', function (string $case) {
     // GIVEN
